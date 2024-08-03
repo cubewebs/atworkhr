@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './register.component.html',
-  styles: ``
+  styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export default class RegisterComponent {
 
 }

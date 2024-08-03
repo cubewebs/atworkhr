@@ -7814,7 +7814,7 @@ jQuery.ajaxTransport(function( options ) {
 								xhr.abort();
 							} else if ( type === "error" ) {
 								complete(
-									// file protocol always yields status 0, assume 404
+									// file protocol always yields status 0, assume not-found
 									xhr.status || 404,
 									xhr.statusText
 								);

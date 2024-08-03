@@ -33,9 +33,18 @@
               }
             ],
             "styles": [
+              "public/assets/plugins/bootstrap/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "public/assets/plugins/jquery/jquery.min.js",
+              "public/assets/plugins/bootstrap/js/popper.min.js",
+              "public/assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
+              "public/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
+              "public/assets/js/waves.js",
+              "public/assets/js/sidebarmenu.js",
+              "public/assets/js/custom.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -92,9 +101,18 @@
               }
             ],
             "styles": [
+              "public/assets/plugins/bootstrap/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "public/assets/plugins/jquery/jquery.min.js",
+              "public/assets/plugins/bootstrap/js/popper.min.js",
+              "public/assets/plugins/bootstrap/js/bootstrap.bundle.min.js",
+              "public/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
+              "public/assets/js/waves.js",
+              "public/assets/js/sidebarmenu.js",
+              "public/assets/js/custom.min.js"
+            ]
           }
         }
       }
