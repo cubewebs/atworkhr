@@ -23,7 +23,7 @@ export const PAGES_ROUTES: Routes = [
       },
       {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
     ]

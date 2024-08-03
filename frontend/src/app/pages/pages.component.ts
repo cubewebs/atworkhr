@@ -10,8 +10,8 @@ import {SidebarComponent} from "../shared/sidebar/sidebar.component";
     imports: [
         BreadcrumbsComponent,
         HeaderComponent,
+        SidebarComponent,
         RouterOutlet,
-        SidebarComponent
     ],
   templateUrl: './pages.component.html',
   styles: ``
