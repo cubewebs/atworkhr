@@ -1,40 +1,40 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import {User} from "../models/mongodb/user.model";
+import {Employee} from "../models/mongodb/employee.model";
 import {generateJwt} from "../helpers/jwt";
 
-export const getUsers = async (req: Request, res: Response) => {
-    const users = await User.find();
+export const getEmployees = async (req: Request, res: Response) => {
+    const employee = await Employee.find();
 
     res.json({
         ok: true,
-        users
+        employee
     })
 }
 
-export const createUser = async (req: Request, res: Response) => {
+export const createEmployee = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
-        const userExists = await User.findOne({email})
-        if (userExists) {
+        const employeeExists = await Employee.findOne({email})
+        if (employeeExists) {
             return res.status(400).json({
                 ok: false,
-                msg: 'User already exists'
+                msg: 'Employee already exists'
             })
         }
-        const user = new User(req.body);
+        const employee = new Employee(req.body);
         // Encrypt password
         const salt = bcrypt.genSaltSync()
-        user.password = bcrypt.hashSync(password, salt);
-        // Save user
-        await user.save()
+        employee.password = bcrypt.hashSync(password, salt);
+        // Save employee
+        await employee.save()
         // Generate token
-        const token = await generateJwt(user.id)
+        const token = await generateJwt(employee.id)
         res.json({
             ok: true,
             token,
-            user
+            employee
         })
     } catch (error) {
         res.json({
@@ -44,24 +44,24 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateEmployee = async (req: Request, res: Response) => {
     // TODO: Validate token
     const uid = req.params.id;
     const body = req.body;
     try {
-        const user = await User.findById(uid);
-        if(!user) {
+        const employee = await Employee.findById(uid);
+        if(!employee) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Employee not found'
             })
         }
         delete body.password;
         delete body.google;
-        const userUpdated = await User.findByIdAndUpdate(uid, body);
+        const employeeUpdated = await Employee.findByIdAndUpdate(uid, body);
         res.json({
             ok: true,
-            user: body
+            employee: body
         })
     } catch (error) {
         res.status(400).json({
@@ -71,19 +71,19 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteEmployee = async (req: Request, res: Response) => {
     const uid = req.params.id;
     try {
-        const user = await User.findByIdAndDelete(uid);
-        if(!user) {
+        const employee = await Employee.findByIdAndDelete(uid);
+        if(!employee) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Employee not found'
             })
         }
         res.json({
             ok: true,
-            msg: 'User deleted'
+            msg: 'Employee deleted'
         })
     } catch (error) {
         res.status(400).json({
@@ -93,19 +93,19 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getEmployeeById = async (req: Request, res: Response) => {
     const uid = req.params.id;
     try {
-        const user = await User.findById(uid);
-        if (!user) {
+        const employee = await Employee.findById(uid);
+        if (!employee) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Employee not found'
             })
         }
         res.json({
             ok: true,
-            user
+            employee
         })
     } catch (error) {
         res.status(400).json({
@@ -113,15 +113,15 @@ export const getUserById = async (req: Request, res: Response) => {
             error
         })
     }
-    const user = await User.findById(uid);
-    if (!user) {
+    const employee = await Employee.findById(uid);
+    if (!employee) {
         return res.status(404).json({
             ok: false,
-            msg: 'User not found'
+            msg: 'Employee not found'
         })
     }
     res.json({
         ok: true,
-        user
+        employee
     })
 }

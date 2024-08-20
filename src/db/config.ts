@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGO_DB = process.env.MONGO_DB || 'mongodb+srv://satixfaxion:Zeus9800@cluster0.54w1i.mongodb.net/hospitals';
+const MONGO_DB = process.env.DB_CNN || 'mongodb+srv://juanjoseaos:Zeus9800@clusterjuanjo0.xkmkhr7.mongodb.net/atworkhr_db';
 
 const dbConnection = async () => {
     try {

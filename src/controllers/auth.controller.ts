@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import {User} from "../models/mongodb/users.model";
+import {User} from "../models/mongodb/user.model";
 import {generateJwt} from "../helpers/jwt";
 
 /**
@@ -18,6 +18,7 @@ export const login = async (req: Request, res: Response) => {
     try {
         // Buscar usuario por email
         const user = await User.findOne({email});
+
         // Si no existe, devuelve error
         if (!user) {
             return res.status(400).json({
@@ -42,12 +43,13 @@ export const login = async (req: Request, res: Response) => {
         // Si la contraseña es válida, devuelve el usuario
         res.json({
             ok: true,
-            token
+            token,
+            role: user.role
         })
 
     } catch (error) {
         // Si ocurre algún error, devuelve el error
-        res.status(400).json({
+        res.status(500).json({
             ok: false,
             error
         })

@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import {validationResult} from "express-validator";
-import {User} from "../models/mongodb/users.model";
+import {User} from "../models/mongodb/user.model";
 
 const validateFields = (req: Request, res: Response, next: NextFunction) => {
 

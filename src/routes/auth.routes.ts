@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/login', [
     check('email', 'The Email is required').isEmail(),
-    check('password', 'The password must be at least 6 characters').isLength({min: 6}),
+    check('password', 'The password is required').not().isEmpty(),
     validateFields
 ], login);
 

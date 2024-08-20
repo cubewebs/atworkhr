@@ -4,6 +4,9 @@ import cors from 'cors';
 import {dbConnection} from '../db/config';
 import usersRoutes from '../routes/users.routes';
 import authRoutes from '../routes/auth.routes';
+import adminRoutes from "../routes/admin.routes";
+import employeesRoutes from "../routes/employees.routes";
+import officesRoutes from "../routes/offices.routes";
 
 export default class Server {
     private app: Application;
@@ -26,6 +29,9 @@ export default class Server {
     routes() {
         this.app.use('/api/users', usersRoutes);
         this.app.use('/api/auth', authRoutes);
+        this.app.use('/api/admin', adminRoutes);
+        this.app.use('/api/offices', officesRoutes);
+        this.app.use('/api/employees', employeesRoutes);
     }
 
     middlewares() {
@@ -36,7 +42,6 @@ export default class Server {
     async dbConnection() {
         try {
             await dbConnection();
-            console.log('Database online');
         } catch (error) {
             console.log(error);
             throw new Error('Error a la hora de inicializar la base de datos');

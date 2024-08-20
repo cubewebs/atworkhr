@@ -1,40 +1,40 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import {User} from "../models/mongodb/user.model";
+import {Office} from "../models/mongodb/office.model";
 import {generateJwt} from "../helpers/jwt";
 
-export const getUsers = async (req: Request, res: Response) => {
-    const users = await User.find();
+export const getOffices = async (req: Request, res: Response) => {
+    const offices = await Office.find();
 
     res.json({
         ok: true,
-        users
+        offices
     })
 }
 
-export const createUser = async (req: Request, res: Response) => {
+export const createOffice = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
-        const userExists = await User.findOne({email})
-        if (userExists) {
+        const officeExists = await Office.findOne({email})
+        if (officeExists) {
             return res.status(400).json({
                 ok: false,
-                msg: 'User already exists'
+                msg: 'Office already exists'
             })
         }
-        const user = new User(req.body);
+        const office = new Office(req.body);
         // Encrypt password
         const salt = bcrypt.genSaltSync()
-        user.password = bcrypt.hashSync(password, salt);
-        // Save user
-        await user.save()
+        // office.password = bcrypt.hashSync(password, salt);
+        // Save office
+        await office.save()
         // Generate token
-        const token = await generateJwt(user.id)
+        const token = await generateJwt(office.id)
         res.json({
             ok: true,
             token,
-            user
+            office
         })
     } catch (error) {
         res.json({
@@ -44,24 +44,24 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateOffice = async (req: Request, res: Response) => {
     // TODO: Validate token
     const uid = req.params.id;
     const body = req.body;
     try {
-        const user = await User.findById(uid);
-        if(!user) {
+        const office = await Office.findById(uid);
+        if(!office) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Office not found'
             })
         }
         delete body.password;
         delete body.google;
-        const userUpdated = await User.findByIdAndUpdate(uid, body);
+        const officeUpdated = await Office.findByIdAndUpdate(uid, body);
         res.json({
             ok: true,
-            user: body
+            office: body
         })
     } catch (error) {
         res.status(400).json({
@@ -71,19 +71,19 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteOffice = async (req: Request, res: Response) => {
     const uid = req.params.id;
     try {
-        const user = await User.findByIdAndDelete(uid);
-        if(!user) {
+        const office = await Office.findByIdAndDelete(uid);
+        if(!office) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Office not found'
             })
         }
         res.json({
             ok: true,
-            msg: 'User deleted'
+            msg: 'Office deleted'
         })
     } catch (error) {
         res.status(400).json({
@@ -93,19 +93,19 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getOfficeById = async (req: Request, res: Response) => {
     const uid = req.params.id;
     try {
-        const user = await User.findById(uid);
-        if (!user) {
+        const office = await Office.findById(uid);
+        if (!office) {
             return res.status(404).json({
                 ok: false,
-                msg: 'User not found'
+                msg: 'Office not found'
             })
         }
         res.json({
             ok: true,
-            user
+            office
         })
     } catch (error) {
         res.status(400).json({
@@ -113,15 +113,15 @@ export const getUserById = async (req: Request, res: Response) => {
             error
         })
     }
-    const user = await User.findById(uid);
-    if (!user) {
+    const office = await Office.findById(uid);
+    if (!office) {
         return res.status(404).json({
             ok: false,
-            msg: 'User not found'
+            msg: 'Office not found'
         })
     }
     res.json({
         ok: true,
-        user
+        office
     })
 }

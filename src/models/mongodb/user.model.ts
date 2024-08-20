@@ -26,7 +26,7 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     }
-});
+}, { collection: 'users' });
 
 UserSchema.method('toJSON', function() {
     const {name, email, password, role, google, _id,  ...rest} = this.toObject();
