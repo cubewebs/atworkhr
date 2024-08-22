@@ -14,7 +14,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
+    console.log('req.body-> ', req.body)
     try {
         const userExists = await User.findOne({email})
         if (userExists) {
@@ -56,12 +56,15 @@ export const updateUser = async (req: Request, res: Response) => {
                 msg: 'User not found'
             })
         }
-        delete body.password;
+        if(body.password) {
+            const salt = bcrypt.genSaltSync()
+            body.password = bcrypt.hashSync(body.password, salt);
+        }
         delete body.google;
-        const userUpdated = await User.findByIdAndUpdate(uid, body);
+        const userUpdated = await User.findByIdAndUpdate(uid, body, { new: true });
         res.json({
             ok: true,
-            user: body
+            user: userUpdated
         })
     } catch (error) {
         res.status(400).json({

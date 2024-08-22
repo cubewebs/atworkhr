@@ -4,7 +4,8 @@ import {Office} from "../models/mongodb/office.model";
 import {generateJwt} from "../helpers/jwt";
 
 export const getOffices = async (req: Request, res: Response) => {
-    const offices = await Office.find();
+    const offices = await Office.find()
+        .populate('user', 'name email img')
 
     res.json({
         ok: true,
@@ -13,12 +14,12 @@ export const getOffices = async (req: Request, res: Response) => {
 }
 
 export const createOffice = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { code } = req.body;
 
     try {
-        const officeExists = await Office.findOne({email})
+        const officeExists = await Office.findOne({code})
         if (officeExists) {
-            return res.status(400).json({
+            return res.status(409).json({
                 ok: false,
                 msg: 'Office already exists'
             })
@@ -94,9 +95,13 @@ export const deleteOffice = async (req: Request, res: Response) => {
 }
 
 export const getOfficeById = async (req: Request, res: Response) => {
+    console.log('req-> ', req)
     const uid = req.params.id;
+
     try {
-        const office = await Office.findById(uid);
+        const office = await Office.findById(uid)
+            .populate('user', 'name email img')
+
         if (!office) {
             return res.status(404).json({
                 ok: false,
@@ -113,15 +118,4 @@ export const getOfficeById = async (req: Request, res: Response) => {
             error
         })
     }
-    const office = await Office.findById(uid);
-    if (!office) {
-        return res.status(404).json({
-            ok: false,
-            msg: 'Office not found'
-        })
-    }
-    res.json({
-        ok: true,
-        office
-    })
 }

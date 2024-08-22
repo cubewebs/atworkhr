@@ -18,6 +18,7 @@ export const login = async (req: Request, res: Response) => {
     try {
         // Buscar usuario por email
         const user = await User.findOne({email});
+        console.log('user-> ', user)
 
         // Si no existe, devuelve error
         if (!user) {

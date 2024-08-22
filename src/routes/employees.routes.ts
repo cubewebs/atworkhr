@@ -14,6 +14,7 @@ router.get('/', validateJwt, getEmployees)
 router.post(
     '/',
     [
+        validateJwt,
         check('name', 'the Name is required').not().isEmpty(),
         check('email', 'The Email is required').isEmail(),
         check('password', 'The password must be at least 6 characters').isLength({min: 6}),

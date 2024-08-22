@@ -5,6 +5,7 @@
 import { Router} from "express";
 import { check } from 'express-validator';
 import { validateFields } from "../middlewares/validate-fields";
+import {validateJwt} from "../middlewares/validate-jwt";
 import {
     createOffice,
     deleteOffice,
@@ -15,19 +16,23 @@ import {
 
 const router = Router();
 
-router.get('/', getOffices)
+router.get('/:id', validateJwt, getOfficeById)
+router.get('/', validateJwt, getOffices)
+router.delete('/:id', validateJwt, deleteOffice)
 router.post(
     '/',
     [
-        check('name', 'the Name is required').not().isEmpty(),
+        validateJwt,
+        check('name', 'The Name is required').not().isEmpty(),
+        check('code', 'The Code is required').not().isMongoId(),
         validateFields
     ],
     createOffice)
 router.put('/:id', [
-    check('name', 'the Name is required').not().isEmpty(),
+    validateJwt,
+    check('name', 'The Name is required').not().isEmpty(),
+    check('code', 'The Code is required').isMongoId(),
     validateFields
 ], updateOffice)
-router.delete('/:id', deleteOffice)
-router.get('/:id', getOfficeById)
 
 export default router;

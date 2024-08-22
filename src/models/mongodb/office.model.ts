@@ -5,6 +5,11 @@ const OfficeSchema = new Schema({
         type: String,
         required: true
     },
+    code: {
+        type: String,
+        required: true,
+        unique: true
+    },
     img: {
         type: String
     },
@@ -16,8 +21,8 @@ const OfficeSchema = new Schema({
 }, { collection: 'offices' });
 
 OfficeSchema.method('toJSON', function() {
-    const {name, user, img, _id,  ...rest} = this.toObject();
-    return {name, user, img,  uid: _id};
+    const {name, code, user, img, _id,  ...rest} = this.toObject();
+    return {name, code, user, img,  uid: _id};
 })
 
 export const Office = model('Office', OfficeSchema);

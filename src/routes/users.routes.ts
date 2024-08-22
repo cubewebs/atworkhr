@@ -16,7 +16,7 @@ router.post(
     [
         check('name', 'the Name is required').not().isEmpty(),
         check('email', 'The Email is required').isEmail(),
-        check('password', 'The password must be at least 6 characters').isLength({min: 6}),
+        check('password', 'The password must be at least 8 characters').isLength({min: 8}),
         check('role', 'The role is required').not().isEmpty(),
         validateFields
         ],

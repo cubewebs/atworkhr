@@ -4,7 +4,9 @@ import {Employee} from "../models/mongodb/employee.model";
 import {generateJwt} from "../helpers/jwt";
 
 export const getEmployees = async (req: Request, res: Response) => {
-    const employee = await Employee.find();
+    const employee = await Employee.find()
+        .populate('user', 'name email img')
+        .populate('office', 'name code')
 
     res.json({
         ok: true,
@@ -16,14 +18,17 @@ export const createEmployee = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
-        const employeeExists = await Employee.findOne({email})
+        const employeeExists = await Employee.findOne({email});
+
         if (employeeExists) {
             return res.status(400).json({
                 ok: false,
                 msg: 'Employee already exists'
             })
         }
-        const employee = new Employee(req.body);
+        const employee = new Employee({
+            ...req.body
+        });
         // Encrypt password
         const salt = bcrypt.genSaltSync()
         employee.password = bcrypt.hashSync(password, salt);
@@ -49,7 +54,10 @@ export const updateEmployee = async (req: Request, res: Response) => {
     const uid = req.params.id;
     const body = req.body;
     try {
-        const employee = await Employee.findById(uid);
+        const employee = await Employee.findById(uid)
+            .populate('user', 'name email img')
+            .populate('office', 'name code')
+
         if(!employee) {
             return res.status(404).json({
                 ok: false,
@@ -58,10 +66,13 @@ export const updateEmployee = async (req: Request, res: Response) => {
         }
         delete body.password;
         delete body.google;
-        const employeeUpdated = await Employee.findByIdAndUpdate(uid, body);
+        const employeeUpdated = await Employee.findByIdAndUpdate(uid, body, {new: true})
+            .populate('user', 'name email img')
+            .populate('office', 'name code')
+
         res.json({
             ok: true,
-            employee: body
+            employee: employeeUpdated
         })
     } catch (error) {
         res.status(400).json({
@@ -96,7 +107,10 @@ export const deleteEmployee = async (req: Request, res: Response) => {
 export const getEmployeeById = async (req: Request, res: Response) => {
     const uid = req.params.id;
     try {
-        const employee = await Employee.findById(uid);
+        const employee = await Employee.findById(uid)
+            .populate('user', 'name email img')
+            .populate('office', 'name code')
+
         if (!employee) {
             return res.status(404).json({
                 ok: false,
