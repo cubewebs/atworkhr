@@ -25,6 +25,10 @@ const UserSchema = new Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    office: {
+        type: Schema.Types.ObjectId,
+        ref: 'Office'
     }
 }, { collection: 'users' });
 

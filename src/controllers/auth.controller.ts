@@ -45,7 +45,7 @@ export const login = async (req: Request, res: Response) => {
         res.json({
             ok: true,
             token,
-            role: user.role
+            user
         })
 
     } catch (error) {

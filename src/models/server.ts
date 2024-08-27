@@ -27,11 +27,11 @@ export default class Server {
     }
 
     routes() {
-        this.app.use('/api/users', usersRoutes);
-        this.app.use('/api/auth', authRoutes);
         this.app.use('/api/admin', adminRoutes);
-        this.app.use('/api/offices', officesRoutes);
+        this.app.use('/api/auth', authRoutes);
         this.app.use('/api/employees', employeesRoutes);
+        this.app.use('/api/offices', officesRoutes);
+        this.app.use('/api/users', usersRoutes);
     }
 
     middlewares() {

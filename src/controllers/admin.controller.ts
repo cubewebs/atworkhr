@@ -14,7 +14,7 @@ export const getAdmins = async (req: Request, res: Response) => {
 
 export const createAdmin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
+    console.log(req.body)
     try {
         const adminExists = await Admin.findOne({email})
         if (adminExists) {
